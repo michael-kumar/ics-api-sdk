@@ -1,0 +1,30 @@
+{
+  "name": "sirma-ics/ics-api-sdk",
+  "description": "Package implementing ics-api via Guzzle",
+  "authors": [
+    {
+      "name": "Sirma ICS",
+      "email": "support@sirmaics.com"
+    },
+    {
+      "name": "Spiridon Georgiev",
+      "email": "spiridon.georgiev@sirma.bg"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Tests\\": "tests/",
+      "SirmaICS\\" : "src/"
+    }
+  },
+  "require": {
+    "php": "^7.0",
+    "guzzlehttp/guzzle": "^6.5",
+    "ext-json": "*",
+    "vlucas/phpdotenv": "^4.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6"
+  },
+  "minimum-stability": "dev"
+}
