@@ -1,6 +1,9 @@
 {
   "name": "sirma-ics/ics-api-sdk",
   "description": "Package implementing ics-api via Guzzle",
+  "license": [
+    "GPL-3.0-or-later"
+  ],
   "authors": [
     {
       "name": "Sirma ICS",
