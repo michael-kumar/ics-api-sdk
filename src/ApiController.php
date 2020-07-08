@@ -4,14 +4,7 @@ namespace SirmaICS;
 
 
 use Dotenv\Dotenv;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use function Couchbase\defaultDecoder;
 
-/**
- * Class ApiController
- * @package SirmaICS
- */
 abstract class ApiController
 {
     protected $apiUrl;
@@ -28,16 +21,7 @@ abstract class ApiController
         $this->setConfiguration();
     }
 
-    /**
-     * @param Client $client
-     * @return void
-     */
-    public function setClient(Client $client)
-    {
-        $this->guzzle = $client;
-    }
-
-    public function setConfiguration(Client $client = null)
+    public function setConfiguration()
     {
         $dotenv = Dotenv::createImmutable(__DIR__);
         $dotenv->load();
@@ -63,7 +47,7 @@ abstract class ApiController
             throw new \Exception('Wrong certificate key path - file not found');
         }
 
-
+        $this->guzzle = new \GuzzleHttp\Client();
     }
 
     public function setMethod($method)
@@ -76,21 +60,13 @@ abstract class ApiController
         }
     }
 
-    public function postCall($url, $data = false)
+    public function postCall($url, $data = false, $string = true)
     {
-        if(empty($this->guzzle)){
-            $this->guzzle = new Client();
-        }
-
         if ($this->token == false) {
-            $auth = $this->authenticate();
-            if($auth !== true){
-                return $auth;
-            }
+            $this->authenticate();
         }
 
         $options = [
-            'base_uri' => $this->apiUrl,
             'headers'         => [
                 'Authorization' => 'Bearer '.$this->token,
             ],
@@ -98,19 +74,15 @@ abstract class ApiController
             'ssl_key'         => $this->apiKey,
             'timeout'         => 60,
             'connect_timeout' => 60,
-            'protocols' => ['https']
         ];
-
-        if ($data != false && !empty($data) && $this->method == 'POST') {
+        if ($data != false && !empty($data)) {
             $options['form_params'] = $data;
-        }elseif($data != false && !empty($data) && $this->method == 'GET'){
-            $url = $url.'?'.http_build_query($data);
         }
 
-        try{
-            $response = $this->guzzle->request($this->method,$url,$options);
-        }catch (ClientException $e){
-            return json_decode($e->getResponse()->getBody(true)->getContents());
+        try {
+            $response = $this->guzzle->request($this->method, $this->apiUrl.$url, $options);
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
 
         return json_decode($response->getBody()->getContents());
@@ -118,10 +90,8 @@ abstract class ApiController
 
     public function authenticate()
     {
-
         $url  = 'security/authenticate';
         $data = [
-            'base_uri' => $this->apiUrl,
             'form_params' => [
                 'email'    => $this->apiUsername,
                 'password' => $this->apiPassword,
@@ -130,15 +100,13 @@ abstract class ApiController
             'ssl_key'     => $this->apiKey,
         ];
 
+        $response = $this->guzzle->post($this->apiUrl.$url, $data);
 
-
-        try{
-            $response = $this->guzzle->post($url, $data);
-            $res = json_decode($response->getBody()->getContents());
+        $res = json_decode($response->getBody()->getContents());
+        if ($response->getStatusCode() == 200 && $res->success != 0) {
             $this->token = $res->result;
-            return true;
-        }catch (ClientException $e){
-            return json_decode($e->getResponse()->getBody(true)->getContents());
+        } else {
+            $this->authenticate();
         }
     }
 
