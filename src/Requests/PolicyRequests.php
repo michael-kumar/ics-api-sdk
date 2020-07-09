@@ -14,7 +14,7 @@ class PolicyRequests extends  ApiController
 {
     public function policyNote(array $data) : \stdClass
     {
-        $url = 'policy/note';
+        $url = '/policy/note';
 
         return $this->postCall($url,$data);
 
@@ -22,7 +22,7 @@ class PolicyRequests extends  ApiController
 
     public function policyFullInfo(array $data) : \stdClass
     {
-        $url = 'policy/full-info';
+        $url = '/policy/full-info';
         $this->setMethod('GET');
         return $this->postCall($url,$data);
 
@@ -30,7 +30,7 @@ class PolicyRequests extends  ApiController
 
     public function policyPrint($hash) : \stdClass
     {
-        $url = 'policy/print/'.$hash;
+        $url = '/policy/print/'.$hash;
         $this->setMethod('GET');
         return $this->postCall($url);
     }

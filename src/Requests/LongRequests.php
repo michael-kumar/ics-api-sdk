@@ -14,21 +14,21 @@ class LongRequests extends ApiController
 {
     public function longCalc(array $data) : \stdClass
     {
-        $url = 'liability/calc';
+        $url = '/liability/calc';
 
         return $this->postCall($url, $data);
     }
 
     public function longIssue(array $data) : \stdClass
     {
-        $url = 'liability/issue';
+        $url = '/liability/issue';
 
         return $this->postCall($url, $data);
     }
 
     public function longIssueWithPayment(array $data) : \stdClass
     {
-        $url = 'liability/policy-and-payment';
+        $url = '/liability/policy-and-payment';
 
         return $this->postCall($url, $data);
     }

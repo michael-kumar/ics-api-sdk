@@ -4,6 +4,7 @@ namespace SirmaICS;
 
 
 use Dotenv\Dotenv;
+use GuzzleHttp\Client;
 
 abstract class ApiController
 {
@@ -19,6 +20,16 @@ abstract class ApiController
     public function __construct()
     {
         $this->setConfiguration();
+    }
+
+
+    /**
+     * @param Client $client
+     * @return void
+     */
+    public function setClient(Client $client)
+    {
+        $this->guzzle = $client;
     }
 
     public function setConfiguration()
@@ -82,7 +93,10 @@ abstract class ApiController
         try {
             $response = $this->guzzle->request($this->method, $this->apiUrl.$url, $options);
         } catch (\Exception $e) {
-            return $e->getMessage();
+            $error = new \stdClass();
+            $error->success = 0;
+            $error->error = $e->getMessage();
+            return $error;
         }
 
         return json_decode($response->getBody()->getContents());
@@ -90,7 +104,7 @@ abstract class ApiController
 
     public function authenticate()
     {
-        $url  = 'security/authenticate';
+        $url  = '/security/authenticate';
         $data = [
             'form_params' => [
                 'email'    => $this->apiUsername,
