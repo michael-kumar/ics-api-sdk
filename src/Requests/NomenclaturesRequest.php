@@ -94,4 +94,108 @@ class NomenclaturesRequest extends  ApiController
         
     }
 
+    /**
+     * @return mixed|string
+     * @throws \Exception
+     */
+    public function getVehicleTypes() : \stdClass
+    {
+        $url = '/objects/vehicle-types';
+        $this->setMethod('GET');
+        return $this->postCall($url);
+
+    }
+
+    /**
+     * @param $vehicle_type_id
+     * @return mixed|string
+     * @throws \Exception
+     */
+    public function getVehicleBodyTypes($vehicle_type_id) : \stdClass
+    {
+        $url = '/objects/vehicle-body-types';
+        $this->setMethod('GET');
+        return $this->postCall($url, ['vehicle_type_id' => $vehicle_type_id]);
+    }
+
+    /**
+     * @return mixed|string
+     * @throws \Exception
+     */
+    public function getVehicleUsage() : \stdClass
+    {
+        $url = '/objects/vehicle-usage';
+        $this->setMethod('GET');
+        return $this->postCall($url);
+
+    }
+
+    /**
+     * @return mixed|string
+     * @throws \Exception
+     */
+    public function getVehicleColors() : \stdClass
+    {
+        $url = '/objects/colors';
+        $this->setMethod('GET');
+        return $this->postCall($url);
+
+    }
+
+    /**
+     * @return mixed|string
+     * @throws \Exception
+     */
+    public function getAssistanceNomenclature() : \stdClass
+    {
+        $url = '/objects/assistance-nomenclature';
+        $this->setMethod('GET');
+        return $this->postCall($url);
+
+    }
+
+    /**
+     * @return mixed|string
+     * @throws \Exception
+     */
+    public function getVehicleEngineTypes() : \stdClass
+    {
+        $url = '/objects/engine-types';
+        $this->setMethod('GET');
+        return $this->postCall($url);
+
+    }
+
+    /**
+     * @param bool $insurer
+     * @return mixed|string
+     * @throws \Exception
+     */
+    public function getVehicleMarks($insurer = false) : \stdClass
+    {
+        $data = $insurer == false ? false : ['insurer' => $insurer];
+        $url  = '/objects/vehicle-marks';
+        $this->setMethod('GET');
+        return $this->postCall($url, $data);
+
+    }
+
+    /**
+     * @param $mark_id
+     * @param bool $insurer
+     * @return mixed|string
+     * @throws \Exception
+     */
+    public function getVehicleModels($mark_id, $insurer = false) : \stdClass
+    {
+        $data = ['vehicle_mark_id' => $mark_id];
+        if ($insurer != false) {
+            $data['insurer'] = $insurer;
+        }
+        $url = '/objects/vehicle-models';
+        $this->setMethod('GET');
+        return $this->postCall($url, $data);
+
+    }
+
 }

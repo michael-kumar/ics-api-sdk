@@ -22,7 +22,7 @@ class ShortRequests extends ApiController
      */
     public function shortCalc(array $data) : \stdClass
     {
-        $url = 'liability/short';
+        $url = '/liability/short';
 
         return $this->postCall($url,$data);
 
@@ -34,7 +34,7 @@ class ShortRequests extends ApiController
      */
     public function shortIssue(array $data) : \stdClass
     {
-        $url = 'liability/policy-short';
+        $url = '/liability/policy-short';
 
         return $this->postCall($url,$data);
     }
@@ -45,7 +45,7 @@ class ShortRequests extends ApiController
      */
     public function shortIssueWithPayment(array $data) : \stdClass
     {
-        $url = 'liability/policy-and-payment-short';
+        $url = '/liability/policy-and-payment-short';
 
         return $this->postCall($url,$data);
 
