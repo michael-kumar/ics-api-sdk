@@ -86,8 +86,10 @@ abstract class ApiController
             'timeout'         => 60,
             'connect_timeout' => 60,
         ];
-        if ($data != false && !empty($data)) {
+        if ($data != false && !empty($data) && $this->method == 'POST') {
             $options['form_params'] = $data;
+        }elseif($data != false && !empty($data) && $this->method == 'GET'){
+            $url = $url.'?'.http_build_query($data);
         }
 
         try {
