@@ -100,8 +100,10 @@ abstract class ApiController
             $error->error = $e->getMessage();
             return $error;
         }
+        $cleanResponse = $response->getBody()->getContents();
+        $response = json_decode($cleanResponse) == null ? $cleanResponse : json_decode($cleanResponse);
 
-        return json_decode($response->getBody()->getContents());
+        return $response;
     }
 
     public function authenticate()

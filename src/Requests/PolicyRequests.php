@@ -28,7 +28,7 @@ class PolicyRequests extends  ApiController
 
     }
 
-    public function policyPrint($hash) : \stdClass
+    public function policyPrint($hash)
     {
         $url = '/policy/print/'.$hash;
         $this->setMethod('GET');
