@@ -41,6 +41,9 @@ Use the package by requiring it:
 
 Sample usage of the package would be:
 ```php 
+
+//load proper $_ENV package configuration - it is strongly advised to use any phpdotenv package for storing such configuration.
+
 $api         = new NomenclaturesRequest();
 $countries   = $api->getCountries();
 ```

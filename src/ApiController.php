@@ -34,19 +34,36 @@ abstract class ApiController
 
     public function setConfiguration()
     {
-        $dotenv = Dotenv::createImmutable(__DIR__);
-        $dotenv->load();
-        $dotenv->required('SIRMAICS_API_URL')->notEmpty();
-        $dotenv->required('SIRMAICS_API_USERNAME')->notEmpty();
-        $dotenv->required('SIRMAICS_API_PASSWORD')->notEmpty();
-        $dotenv->required('SIRMAICS_API_CERT_PATH')->notEmpty();
-        $dotenv->required('SIRMAICS_API_KEY_PATH')->notEmpty();
+        $this->apiUsername    = isset($_ENV['SIRMAICS_API_USERNAME'])?$_ENV['SIRMAICS_API_USERNAME'] : null;
+        $this->apiPassword    = isset($_ENV['SIRMAICS_API_PASSWORD'])?$_ENV['SIRMAICS_API_PASSWORD'] : null;
+        $this->apiCertificate = isset($_ENV['SIRMAICS_API_CERT_PATH'])?$_ENV['SIRMAICS_API_CERT_PATH'] : null;
+        $this->apiKey         = isset($_ENV['SIRMAICS_API_KEY_PATH'])?$_ENV['SIRMAICS_API_KEY_PATH'] : null;
+        $this->apiUrl         = isset($_ENV['SIRMAICS_API_URL'])?$_ENV['SIRMAICS_API_URL'] : null;
 
-        $this->apiUsername    = $_ENV['SIRMAICS_API_USERNAME'];
-        $this->apiPassword    = $_ENV['SIRMAICS_API_PASSWORD'];
-        $this->apiCertificate = $_ENV['SIRMAICS_API_CERT_PATH'];
-        $this->apiKey         = $_ENV['SIRMAICS_API_KEY_PATH'];
-        $this->apiUrl         = $_ENV['SIRMAICS_API_URL'];
+        if(empty($this->apiUsername))
+        {
+            throw new \Exception('Username not provided');
+        }
+
+        if(empty($this->apiPassword))
+        {
+            throw new \Exception('Password not provided');
+        }
+
+        if(empty($this->apiUrl))
+        {
+            throw new \Exception('Api URL not provided');
+        }
+
+        if(empty($this->apiCertificate))
+        {
+            throw new \Exception('Certificate not provided');
+        }
+
+        if(empty($this->apiKey))
+        {
+            throw new \Exception('Api Key not provided');
+        }
 
         if(!file_exists($this->apiCertificate))
         {
